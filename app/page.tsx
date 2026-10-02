@@ -1,6 +1,6 @@
 'use client';
 import {useEffect,useCallback,useState} from 'react';
-import {ArrowUpRight,ShoppingBag,RotateCw,Headphones,Check} from 'lucide-react';
+import {ArrowUpRight,ShoppingBag,Headphones,Check} from 'lucide-react';
 import {products} from '@/lib/catalog';
 import {Bottle} from '@/components/africa/bottle';
 import {Concierge} from '@/components/africa/concierge';
@@ -13,7 +13,6 @@ const families=['Tout','Floral','Boisé','Ambré'];
 
 export default function Home(){
  const [product,setProduct]=useState(products[0]);
- const [turn,setTurn]=useState(0);
  const [chat,setChat]=useState(false);
  const [detail,setDetail]=useState(false);
  const [bag,setBag]=useState(false);
@@ -24,10 +23,10 @@ export default function Home(){
  useEffect(()=>{document.documentElement.dataset.motion=still?'still':'full';const frame=requestAnimationFrame(()=>{const instance=window.ScrollCraft?.instances[0] as {layout?:()=>void}|undefined;instance?.layout?.()});return()=>cancelAnimationFrame(frame)},[still]);
 
  const show=useCallback((id:string,details=false)=>{const p=products.find(p=>p.id===id);if(!p)throw new Error('Parfum inconnu');setProduct(p);setDetail(details);document.getElementById('atelier')?.scrollIntoView({behavior:document.documentElement.dataset.motion==='still'?'instant':'smooth'});return p},[]);
- const act=useCallback((a:{action:string;productId:string|null})=>{if(a.action==='show_product'&&a.productId)show(a.productId);if(a.action==='open_details'&&a.productId)show(a.productId,true);if(a.action==='show_collection'){setFilter('Tout');document.getElementById('collection')?.scrollIntoView({behavior:document.documentElement.dataset.motion==='still'?'instant':'smooth'})}if(a.action==='rotate_product')setTurn(t=>t+1)},[show]);
+ const act=useCallback((a:{action:string;productId:string|null})=>{if(a.action==='show_product'&&a.productId)show(a.productId);if(a.action==='open_details'&&a.productId)show(a.productId,true);if(a.action==='show_collection'){setFilter('Tout');document.getElementById('collection')?.scrollIntoView({behavior:document.documentElement.dataset.motion==='still'?'instant':'smooth'})}},[show]);
 
  // WebMCP : deux outils inchangés, aucune commande, aucun prix.
- useEffect(()=>{const context=(document as unknown as {modelContext?:{registerTool:(t:unknown,o:unknown)=>Promise<void>}}).modelContext;if(!context)return;const controller=new AbortController();const register=(tool:unknown)=>{try{Promise.resolve(context.registerTool(tool,{signal:controller.signal})).catch(()=>{})}catch{}};register({name:'show_perfume',description:'Afficher un parfum du catalogue Africa Parfum en 3D. Ne crée aucune commande.',inputSchema:{type:'object',properties:{productId:{type:'string',enum:products.map(p=>p.id)}},required:['productId'],additionalProperties:false},annotations:{readOnlyHint:false},execute:async(input:{productId:string})=>{if(!input||typeof input.productId!=='string')throw Error('Identifiant requis');const p=show(input.productId);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {productId:p.id,name:p.name,visible:true}}});register({name:'list_perfumes',description:'Lire le catalogue de démonstration, sans prix ni stock.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>products.map(({id,brand,name,family})=>({id,brand,name,family}))});return()=>controller.abort()},[show]);
+ useEffect(()=>{const context=(document as unknown as {modelContext?:{registerTool:(t:unknown,o:unknown)=>Promise<void>}}).modelContext;if(!context)return;const controller=new AbortController();const register=(tool:unknown)=>{try{Promise.resolve(context.registerTool(tool,{signal:controller.signal})).catch(()=>{})}catch{}};register({name:'show_perfume',description:'Afficher un parfum du catalogue Africa Parfum. Ne crée aucune commande.',inputSchema:{type:'object',properties:{productId:{type:'string',enum:products.map(p=>p.id)}},required:['productId'],additionalProperties:false},annotations:{readOnlyHint:false},execute:async(input:{productId:string})=>{if(!input||typeof input.productId!=='string')throw Error('Identifiant requis');const p=show(input.productId);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));return {productId:p.id,name:p.name,visible:true}}});register({name:'list_perfumes',description:'Lire les références réelles du catalogue, sans prix ni stock.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>products.map(({id,brand,name,family})=>({id,brand,name,family}))});return()=>controller.abort()},[show]);
 
  const add=(id:string)=>setSelection(s=>s.includes(id)?s:[...s,id]);
  const displayed=products.filter(p=>filter==='Tout'||p.family.toLowerCase().includes(filter.toLowerCase()));
@@ -35,7 +34,7 @@ export default function Home(){
  return <main className="ae-main">
   <ScrollExperience/>
   <header className="header"><a className="brand" href="#atelier">AFRICA<span>PARFUM</span></a><nav aria-label="Sommaire de la visite"><a href="#atelier">L’atelier</a><a href="#sillage">Le sillage</a><a href="#collection">Le catalogue</a><a href="#selection">Ma sélection</a></nav><button className="text-button" onClick={()=>setBag(true)}><ShoppingBag size={18}/> Ma sélection <span>{selection.length}</span></button></header>
-  <div className="demo-bar">ATELIER DE DÉMONSTRATION <button className="motion-switch" aria-pressed={still} onClick={()=>setStill(s=>!s)}>{still?'Animations désactivées':'Réduire les animations'}</button></div>
+  <div className="demo-bar">PARFUMERIE AFRICA <button className="motion-switch" aria-pressed={still} onClick={()=>setStill(s=>!s)}>{still?'Animations désactivées':'Réduire les animations'}</button></div>
 
   {/* Beat 1 — l'atelier : héro en profondeur, objet 1 déjà étiqueté. */}
   <section id="atelier" data-sc-act="pin" data-sc-span="1.5" className="ae-act ae-atelier">
@@ -49,15 +48,14 @@ export default function Home(){
     <div className="ae-hero-copy" data-sc-cue="0 1 0 0">
      <p className="sc-label">L’atelier · six maisons</p>
      <h1 className="ae-title">Votre parfum.<br/>Son empreinte.</h1>
-     <p className="ae-lede">Explorez les flacons en 3D, découvrez leurs notes et composez votre sélection.</p>
+     <p className="ae-lede">Découvrez les vrais flacons, leurs notes et composez votre sélection.</p>
      <div className="ae-hero-actions">
       <a className="primary" href="#collection"><ArrowUpRight size={18}/> Choisir un parfum</a>
       <button className="quiet-link ae-quiet" onClick={()=>setChat(true)}><Headphones size={17}/> Ouvrir Hermes</button>
      </div>
     </div>
     <div className="ae-subject" data-sc-parallax="-0.5">
-     <Bottle product={product} turn={turn}/>
-     <div className="ae-plinth" aria-hidden="true"/>
+     <Bottle product={product}/>
     </div>
     <div className="ae-hero-label" data-sc-cue="0 1 0 0">
      <span className="sc-label">{product.brand}</span>
@@ -65,7 +63,6 @@ export default function Home(){
      <p className="ae-subject-meta">{product.family} · {product.notes.length} notes</p>
      <div className="ae-label-actions">
       <button className="ae-chip" onClick={()=>setDetail(true)}>Voir la fiche</button>
-      <button className="ae-chip" onClick={()=>setTurn(t=>t+1)} aria-label="Tourner le flacon"><RotateCw size={15}/> Tourner</button>
      </div>
     </div>
    </div>
@@ -97,7 +94,7 @@ export default function Home(){
     <div className="ae-collection-head" data-sc-in data-sc-stagger="60">
      <p className="sc-label">Le catalogue</p>
      <h2 className="ae-h2">Chaque flacon, ses notes.</h2>
-     <p className="ae-lede ae-lede--sm">Catalogue de démonstration, sans prix et sans stock. Les maisons sont citées à titre illustratif.</p>
+     <p className="ae-lede ae-lede--sm">Six signatures, photographiées par leurs maisons. Découvrez chaque eau de parfum et ses notes.</p>
     </div>
     <div className="ae-filters" role="group" aria-label="Filtrer par famille">
      {families.map(f=><button key={f} aria-pressed={filter===f} className={filter===f?'ae-filter is-active':'ae-filter'} onClick={()=>setFilter(f)}>{f}</button>)}
@@ -117,7 +114,7 @@ export default function Home(){
       </div>
      </article>)}
     </div>
-    <p className="ae-grid-note" data-sc-in>Aucun prix, aucun paiement : la visite se limite à la découverte.</p>
+    <p className="ae-grid-note" data-sc-in>Votre sélection vous accompagne pendant cette visite.</p>
    </div>
   </section>
 
@@ -138,17 +135,16 @@ export default function Home(){
       <button className="primary" onClick={()=>setChat(true)}><Headphones size={18}/> Ouvrir Hermes</button>
       <a className="quiet-link ae-quiet" href="#collection">Revenir au catalogue <ArrowUpRight size={17}/></a>
      </div>
-     <p className="ae-close-note">Hermes conseille en démonstration locale. Le service vocal public reste à héberger. Rien n’est commandé ni payé.</p>
+     <p className="ae-close-note">Le conseiller Hermes sera disponible lorsque son service sera connecté. Les achats ne sont pas encore ouverts.</p>
     </div>
    </div>
   </section>
 
-  <footer className="ae-footer"><a className="brand" href="#atelier">AFRICA<span>PARFUM</span></a><p>Démonstration indépendante · Aucune commande ni paiement.<br/>Marques citées à titre illustratif. Flacons 3D non contractuels.</p></footer>
+  <footer className="ae-footer"><a className="brand" href="#atelier">AFRICA<span>PARFUM</span></a><p>Parfumerie indépendante.<br/>Photographies des maisons. Achats indisponibles pour le moment.</p></footer>
 
   <Concierge open={chat} onOpen={setChat} currentProduct={product.id} onAction={act}/>
-  <Sheet open={detail} onOpenChange={setDetail}><SheetContent className="detail-panel"><SheetTitle>{product.brand} · {product.name}</SheetTitle><SheetDescription>Étude de parfum · Démonstration Africa Parfum</SheetDescription><Bottle product={product} small/><h3>{product.family}</h3><p>{product.description}</p><NotesMotion notes={product.notes}/><div className="note-tags">{product.notes.map(n=><span key={n}>{n}</span>)}</div><button className="primary selection-button" onClick={()=>add(product.id)}>{selection.includes(product.id)?<><Check size={18}/> Dans ma sélection</>:'Ajouter à ma sélection'}</button><p>Aucun achat : gardez vos découvertes pendant cette visite.</p><a className="detail-source" href={sources[product.id]} target="_blank" rel="noreferrer">Découvrir la fiche de la maison</a></SheetContent></Sheet>
+  <Sheet open={detail} onOpenChange={setDetail}><SheetContent className="detail-panel"><SheetTitle>{product.brand} · {product.name}</SheetTitle><SheetDescription>Eau de parfum · Africa Parfum</SheetDescription><Bottle product={product} small/><h3>{product.family}</h3><p>{product.description}</p><NotesMotion notes={product.notes}/><div className="note-tags">{product.notes.map(n=><span key={n}>{n}</span>)}</div><button className="primary selection-button" onClick={()=>add(product.id)}>{selection.includes(product.id)?<><Check size={18}/> Dans ma sélection</>:'Ajouter à ma sélection'}</button><p>Aucun achat : gardez vos découvertes pendant cette visite.</p><a className="detail-source" href={product.source} target="_blank" rel="noreferrer">Découvrir la fiche de la maison</a></SheetContent></Sheet>
   <Sheet open={bag} onOpenChange={setBag}><SheetContent className="detail-panel"><SheetTitle>Ma sélection</SheetTitle><SheetDescription>Vos parfums à découvrir, sans commande ni paiement.</SheetDescription>{selection.length===0?<p>Votre sélection est vide. Découvrez un parfum pour l’ajouter.</p>:selection.map(id=>{const p=products.find(p=>p.id===id)!;return <div key={id} className="selection-item"><div>{p.brand}<h3>{p.name}</h3></div><button onClick={()=>setSelection(s=>s.filter(x=>x!==id))} aria-label={`Retirer ${p.name}`}>Retirer</button></div>})}</SheetContent></Sheet>
  </main>
 }
 
-const sources:Record<string,string>={'dior-sauvage':'https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-C099700027.html','chanel-n5':'https://www.chanel.com/us/fragrance/p/125430/n5-eau-de-parfum-spray/','ysl-libre':'https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html','tom-ford-oud-wood':'https://www.tomfordbeauty.com/products/oud-wood-eau-de-parfum','guerlain-shalimar':'https://www.guerlain.com/us/en-us/p/shalimar-eau-de-parfum-G011353.html','mfk-baccarat-rouge-540':'https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum-RA12232.html'};

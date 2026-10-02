@@ -193,3 +193,22 @@ html[data-motion="still"] .ae-stage--atelier{height:auto!important;min-height:0!
 .ae-footer{padding-bottom:104px}
 @media(max-width:680px){.chat-toggle{padding:13px;border-radius:50%;width:48px;height:48px}.chat-toggle-label{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.ae-stage--sillage{padding-bottom:74px}.ae-house{min-height:44px}}
 @media(max-height:690px) and (max-width:900px){.ae-notes{grid-template-columns:1fr 1fr}.ae-ribbon{height:94px}.ae-sillage-copy .ae-lede{font-size:12px}.ae-houses .sc-label{display:none}}
+
+/* Original house photography: intrinsic proportions preserved, no invented 3D. */
+.product-photo{display:flex;align-items:center;justify-content:center;cursor:default;overflow:hidden;background:#f6f5f1;border:1px solid #ddd8cd;border-radius:3px}
+.product-photo img{display:block;width:100%;height:100%;object-fit:contain;padding:12px}
+.ae-subject>.product-photo{max-width:390px;box-shadow:0 24px 46px #050c0860}
+.ae-card-main .product-photo{margin-bottom:14px}
+.detail-panel .product-photo{height:380px;margin:20px 0}
+.photo-error{position:absolute;inset:20px;background:#f6f5f1;color:#202820;padding:20px;text-align:center}
+@media(max-width:900px){.ae-subject>.product-photo{max-width:270px}.product-photo img{padding:8px}.detail-panel .product-photo{height:300px}}
+
+.product-photo[data-product="dior-sauvage"]{background:#f2f2f4}
+.product-photo[data-product="dior-sauvage"] img{transform:scale(2.1)}
+.product-photo[data-product="ysl-libre"]{background:#fff}
+.product-photo[data-product="chanel-n5"] img{transform:scale(1.15)}
+.product-photo[data-product="guerlain-shalimar"] img{transform:scale(1.4)}
+.product-photo[data-product="mfk-baccarat-rouge-540"] img{transform:scale(1.35)}
+.product-photo[data-product="tom-ford-oud-wood"] img{transform:scale(1.1)}
+
+@media(max-width:900px){.ae-subject{transform:none!important}}

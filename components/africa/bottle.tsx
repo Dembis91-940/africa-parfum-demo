@@ -1,33 +1,16 @@
+
 'use client';
-import {useEffect,useRef,useState} from 'react';
+import {useState,useEffect} from 'react';
 import type {Product} from '@/lib/catalog';
-import * as THREE from 'three';
-import {RoundedBoxGeometry} from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
-import {RoomEnvironment} from 'three/examples/jsm/environments/RoomEnvironment.js';
-export function Bottle({product,small=false,turn=0}:{product:Product;small?:boolean;turn?:number}){
- const mount=useRef<HTMLDivElement>(null); const group=useRef<THREE.Group|null>(null); const [failed,setFailed]=useState(false);
- useEffect(()=>{if(group.current){group.current.userData.turn=(group.current.userData.turn||0)+(turn?Math.PI/2:0);group.current.rotation.y+=turn?Math.PI/2:0}},[turn]);
- useEffect(()=>{
- const host=mount.current;if(!host)return;let renderer:THREE.WebGLRenderer;try{renderer=new THREE.WebGLRenderer({antialias:true,alpha:true})}catch{setFailed(true);return}
- renderer.setPixelRatio(Math.min(devicePixelRatio,small?1.25:2));renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=.92;renderer.shadowMap.enabled=!small;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.appendChild(renderer.domElement);
- const scene=new THREE.Scene();const camera=new THREE.PerspectiveCamera(33,1,.1,100);camera.position.set(0,.7,7.8);camera.lookAt(0,.1,0);
- const pmrem=new THREE.PMREMGenerator(renderer);const room=new RoomEnvironment();const env=pmrem.fromScene(room,.04);scene.environment=env.texture;room.dispose();
- scene.add(new THREE.HemisphereLight(0xfff2db,0x172719,1.7));const light=new THREE.DirectionalLight(0xffd7a1,4);light.position.set(3,4,5);light.castShadow=!small;light.shadow.mapSize.set(1024,1024);light.shadow.bias=-.002;scene.add(light);const rim=new THREE.DirectionalLight(0xf8d29b,2);rim.position.set(-4,2,-2);scene.add(rim);
- const bottle=new THREE.Group();group.current=bottle;scene.add(bottle);bottle.rotation.y=-.32;
- const round=product.shape==='round'||product.id==='dior-sauvage',tall=product.shape==='tall';const w=round?1.3:tall?1.05:1.5,h=tall?2.15:1.85,d=.72;
- const geom=round?new THREE.CylinderGeometry(.8,.72,h,64):new RoundedBoxGeometry(w,h,d,5,.095);
- const body=new THREE.Mesh(geom,new THREE.MeshPhysicalMaterial({color:product.color,metalness:.05,roughness:.07,transmission:.68,thickness:.9,transparent:true,opacity:1,ior:1.52,clearcoat:1,clearcoatRoughness:.03}));body.castShadow=true;bottle.add(body);
- const bottom=new THREE.Mesh(round?new THREE.CylinderGeometry(.81,.73,.14,64):new RoundedBoxGeometry(w+.035,.14,d+.035,3,.045),new THREE.MeshPhysicalMaterial({color:0xc6c9b9,metalness:.08,roughness:.05,transmission:.65,thickness:.4}));bottom.position.y=-h/2;bottle.add(bottom);
- const neck=new THREE.Mesh(new THREE.CylinderGeometry(.22,.22,.25,32),new THREE.MeshStandardMaterial({color:0xd9b97b,metalness:1,roughness:.22}));neck.position.y=h/2+.1;bottle.add(neck);
- const cap=new THREE.Mesh(round?new THREE.CylinderGeometry(.4,.32,.46,32):new RoundedBoxGeometry(w*.6,.46,d*.9,3,.035),new THREE.MeshStandardMaterial({color:0x141916,metalness:.6,roughness:.22}));cap.position.y=h/2+.38;bottle.add(cap);
- const label=document.createElement('canvas');label.width=512;label.height=512;const ctx=label.getContext('2d')!;ctx.fillStyle='#eee6d5';ctx.fillRect(0,0,512,512);ctx.strokeStyle='#ac966b';ctx.lineWidth=4;ctx.strokeRect(20,20,472,472);ctx.fillStyle='#222920';ctx.textAlign='center';ctx.font='26px Georgia';ctx.fillText(product.brand.toUpperCase().slice(0,26),256,120);ctx.font='44px Georgia';const words=product.name.split(' ');if(product.name.length>16){ctx.fillText(words.slice(0,2).join(' '),256,242);ctx.fillText(words.slice(2).join(' '),256,299)}else ctx.fillText(product.name,256,265);ctx.font='20px sans-serif';ctx.fillText('EAU DE PARFUM',256,385);ctx.font='16px sans-serif';ctx.fillText('ÉTUDE DE FLACON • AFRICA PARFUM',256,445);
- const tex=new THREE.CanvasTexture(label);tex.anisotropy=renderer.capabilities.getMaxAnisotropy();tex.colorSpace=THREE.SRGBColorSpace;const plaque=new THREE.Mesh(round?new THREE.CylinderGeometry(.806,.806,h*.65,48,1,true,-.55,1.1):new THREE.PlaneGeometry(w*.79,h*.65),new THREE.MeshBasicMaterial({map:tex}));plaque.position.set(0,-.08,round?0:d/2+.015);bottle.add(plaque);
- const floor=new THREE.Mesh(new THREE.CylinderGeometry(1.4,1.5,.2,80),new THREE.MeshStandardMaterial({color:0x17231b,metalness:.22,roughness:.3}));floor.position.y=-h/2-.2;floor.receiveShadow=true;scene.add(floor);const ring=new THREE.Mesh(new THREE.TorusGeometry(1.42,.012,8,100),new THREE.MeshStandardMaterial({color:0xb89555,metalness:.85,roughness:.25}));ring.rotation.x=Math.PI/2;ring.position.y=-h/2-.095;scene.add(ring);
- const resize=()=>{const {width,height}=host.getBoundingClientRect();renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();renderer.render(scene,camera)};const ro=new ResizeObserver(resize);ro.observe(host);resize();
- let drag=false,last=0,userYaw=0;let phase=0;const down=(e:PointerEvent)=>{drag=true;last=e.clientX;host.setPointerCapture(e.pointerId)};const move=(e:PointerEvent)=>{if(drag){userYaw+=(e.clientX-last)*.012;bottle.rotation.y=userYaw-.2;last=e.clientX}};const up=()=>drag=false;
- host.addEventListener('pointerdown',down);host.addEventListener('pointermove',move);host.addEventListener('pointerup',up);host.addEventListener('pointercancel',up);
- const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;let frame=0;let alive=true;let visible=true;const io=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting});io.observe(host);const tick=()=>{if(!alive)return;if(visible){if(!small&&!drag&&!reduced&&document.documentElement.dataset.motion!=='still'){phase+=.008;bottle.rotation.y=userYaw-.2+(bottle.userData.turn||0)+Math.sin(phase)*.12;}renderer.render(scene,camera)}if(!small)frame=requestAnimationFrame(tick)};tick();
- return()=>{alive=false;cancelAnimationFrame(frame);ro.disconnect();io.disconnect();host.removeEventListener('pointerdown',down);host.removeEventListener('pointermove',move);host.removeEventListener('pointerup',up);host.removeEventListener('pointercancel',up);scene.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose();const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(m=>m.dispose())}});tex.dispose();env.dispose();pmrem.dispose();renderer.dispose();renderer.domElement.remove();group.current=null};
- },[product,small]);
- return <div ref={mount} className={small?'bottle small':'bottle'} role="img" aria-label={`Représentation 3D de démonstration : ${product.name}. Glissez pour tourner.`}>{failed&&<p>La 3D n’est pas disponible sur ce navigateur.</p>}</div>
+
+/** Photographie du vrai produit, sans géométrie ni étiquette reconstruite. */
+export function Bottle({product,small=false}:{product:Product;small?:boolean}){
+ const [base,setBase]=useState<string|null>(null);
+ const [failed,setFailed]=useState(false);
+ useEffect(()=>{const url=new URL(document.baseURI);setBase(url.pathname.slice(0,url.pathname.lastIndexOf('/')+1))},[]);
+ useEffect(()=>setFailed(false),[product.id]);
+ return <div data-product={product.id} className={`bottle product-photo${small?' small':''}`}>
+  <img key={product.id} src={base?`${base}${product.image}`:undefined} alt={`${product.brand} ${product.name}, eau de parfum. Photographie du flacon réel.`} loading={small?'lazy':'eager'} decoding="async" onError={()=>setFailed(true)} />
+  {failed&&<p className="photo-error">La photographie ne peut pas être chargée. Consultez la fiche de la maison.</p>}
+ </div>
 }

@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Africa Parfum — Une histoire à part",
-  description: "Découvrez une sélection de parfums en 3D, guidé par Hermes. Démonstration Africa Parfum.",
+  description: "Découvrez six parfums de grandes maisons, les photographies de leurs vrais flacons et leurs notes.",
   other: {
     "codex-preview": "development",
   },

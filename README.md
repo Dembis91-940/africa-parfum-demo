@@ -1,17 +1,17 @@
 # Africa Parfum
 
-Démonstration de parfumerie interactive : catalogue de six maisons, flacons Three.js, animations Remotion, sélection sans achat et conseiller Hermes.
+Présentation de parfumerie : six références réelles, photographies originales des maisons, Scrollcraft, animations Remotion et sélection personnelle.
 
 **Le site GitHub Pages est une vitrine permanente. Le conseiller Hermes est connecté dans la version locale uniquement.** GitHub Pages ne peut pas exécuter le service Python Hermes. Aucun paiement ou stock réel.
 
-## Démonstration locale
+## Version locale
 
 - Node 22+, `npm ci`, puis `npm run dev`.
 - Copier `.env.example` vers `.env.local` et générer un jeton aléatoire pour `HERMES_BRIDGE_TOKEN`.
 - `HERMES_BRIDGE_URL=http://127.0.0.1:8788/chat`.
 - Exécuter `scripts/hermes-bridge.py` avec le Python de l’installation Hermes. Adapter `HERMES_SOURCE` si nécessaire.
 - Les accès fournisseur sont résolus par Hermes ; ne jamais copier ses secrets dans le navigateur ou le dépôt.
-- Dans le navigateur, demander « Montre-moi Baccarat Rouge 540 », « Ouvre sa fiche » ou « Fais tourner le flacon ».
+- Dans le navigateur, demander « Montre-moi Baccarat Rouge 540 », « Ouvre sa fiche ».
 - Le microphone nécessite un navigateur compatible et une autorisation explicite. Repli texte disponible.
 
 ## GitHub Pages
@@ -20,7 +20,7 @@ Démonstration de parfumerie interactive : catalogue de six maisons, flacons Thr
 
 ## Limites
 
-Les silhouettes 3D sont des études et non les flacons officiels. Les marques sont citées sans affiliation. Les fiches renvoient aux maisons. Aucun prix, stock, achat ou commande. La sélection ne persiste pas après fermeture. Le conseiller local utilise les classes Hermes AIAgent sans outils système ni mémoire personnelle. Pour une conversation à distance, déployer un service Hermes isolé derrière authentification, limiter le débit et relier un backend HTTPS au site ; ne jamais publier le relais personnel brut.
+Les silhouettes 3D inventées ont été supprimées. Les photographies montrent les vrais flacons. Leur provenance et les empreintes SHA256 sont dans `public/products/sources.json`. Aucun modèle 3D fidèle validé n’est disponible dans ce projet ; aucune rotation 3D n’est promise. Les marques sont citées sans affiliation. Les fiches renvoient aux maisons. Aucun prix, stock, achat ou commande. La sélection ne persiste pas après fermeture. Le conseiller local utilise les classes Hermes AIAgent sans outils système ni mémoire personnelle. Pour une conversation à distance, déployer un service Hermes isolé derrière authentification, limiter le débit et relier un backend HTTPS au site ; ne jamais publier le relais personnel brut.
 
 ## Vérifications
 

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "dior-sauvage",
+    "source": "https://www.dior.com/dw/image/v2/BGXS_PRD/on/demandware.static/-/Sites-master_dior/default/dwf05a2449/Y0785220/Y0785220_C099700027_E01_RHC.jpg?sw=1000",
+    "file": "dior-sauvage.jpg",
+    "bytes": 27504,
+    "sha256": "00c5dfeed16d1d3471f880fa2b2c91a9aab2d25e858a093c2d4b1a7792018e4a",
+    "product_page": "https://www.dior.com/en_us/beauty/products/sauvage-eau-de-parfum-C099700027.html"
+  },
+  {
+    "id": "chanel-n5",
+    "source": "https://www.chanel.com/images/w_0.51%2Ch_0.51%2Cc_crop/q_auto%3Agood%2Cf_auto%2Cfl_lossy%2Cdpr_1.1/w_1920/n-5-eau-de-parfum-spray-3-4fl-oz--packshot-default-125530-9564912943134.jpg",
+    "file": "chanel-n5.png",
+    "bytes": 533736,
+    "sha256": "52185344818704771416ad312a65e08624e3511357c71680ba18bebba6b26a5c",
+    "product_page": "https://www.chanel.com/us/fragrance/p/125530/n5-eau-de-parfum-spray/"
+  },
+  {
+    "id": "ysl-libre",
+    "source": "https://www.yslbeautyus.com/dw/image/v2/AANG_PRD/on/demandware.static/-/Sites-ysl-master-catalog/default/dw3cedbd53/Images2019/Libre%20Eau%20De%20Parfum/90mL/3614272648425.webp?q=85&sfrm=jpg&sh=1000&sm=cut&sw=1000",
+    "file": "ysl-libre.webp",
+    "bytes": 32810,
+    "sha256": "018a409acbcdb98022614d97f8851d807e8a467bdbf6c719e5ebe2e6dc00efbf",
+    "product_page": "https://www.yslbeautyus.com/fragrance/womens-fragrances/libre/libre-eau-de-parfum/109YSL.html"
+  },
+  {
+    "id": "guerlain-shalimar",
+    "source": "https://www.guerlain.com/dw/image/v2/BDCZ_PRD/on/demandware.static/-/Sites-GSA_master_catalog/default/dw96381ee6/01-ProductsViewer/P011355/P011355_G011353_E01_hi-res.png?sh=1000&sw=1000",
+    "file": "guerlain-shalimar.png",
+    "bytes": 345205,
+    "sha256": "3e0bc0034b33ebe2dd005cfaa11a837f1921fe644ca73da37981b04fe37f56a9",
+    "product_page": "https://www.guerlain.com/us/en-us/p/shalimar-eau-de-parfum-G011353.html"
+  },
+  {
+    "id": "mfk-baccarat-rouge-540",
+    "source": "https://www.franciskurkdjian.com/dw/image/v2/BJSB_PRD/on/demandware.static/-/Sites-mfk-master-catalog/default/dwa46019b3/BACCARAT_ROUGE_540/FRAGRANCE/3700559603116_BR540_EDP_70ML_1.png?q=85&sfrm=png&sh=1000&strip=true&sw=1000",
+    "file": "mfk-baccarat-rouge-540.png",
+    "bytes": 334024,
+    "sha256": "90a1e8d4043cce599447fd2a6c072ccd3976a8bba3483672558b7fc513506dd1",
+    "product_page": "https://www.franciskurkdjian.com/us-en/p/baccarat-rouge-540-eau-de-parfum-RA12232.html"
+  },
+  {
+    "id": "tom-ford-oud-wood",
+    "source": "https://cdn.shopify.com/s/files/1/0761/9690/5173/files/tf_sku_T1XF01_2000x2000_0.png?v=1790928212",
+    "file": "tom-ford-oud-wood.png",
+    "bytes": 1250913,
+    "sha256": "4666fb98761e9d1a7876bc32f09538f3dc235d8724b3432c9322500caebc8e44",
+    "product_page": "https://www.tomfordbeauty.com/products/oud-wood-eau-de-parfum"
+  }
+]
