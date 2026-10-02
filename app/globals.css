@@ -203,8 +203,10 @@ html[data-motion="still"] .ae-stage--atelier{height:auto!important;min-height:0!
 .photo-error{position:absolute;inset:20px;background:#f6f5f1;color:#202820;padding:20px;text-align:center}
 @media(max-width:900px){.ae-subject>.product-photo{max-width:270px}.product-photo img{padding:8px}.detail-panel .product-photo{height:300px}}
 
-/* Flacons complets : le fond blanc des photos est fondu par multiply, donc plus
-   besoin de zoom (scale) qui coupait le haut/bas de certains flacons. */
+/* Flacons complets : les PNG transparents restent à leur taille (plus de zoom qui
+   coupait). Dior est une photo JPG à fond blanc : on zoome juste assez pour remplir
+   la carte sans couper le flacon (le fond blanc est fondu par multiply). */
+.product-photo[data-product="dior-sauvage"] img{transform:scale(2.1)}
 
 @media(max-width:900px){.ae-subject{transform:none!important}}
 
