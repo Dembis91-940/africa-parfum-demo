@@ -25,3 +25,8 @@ Les silhouettes 3D sont des études et non les flacons officiels. Les marques so
 ## Vérifications
 
 TypeScript ; demande réelle à Hermes et sélection automatique testées dans le navigateur ; catalogue WebMCP, sélection valide et identifiant invalide ; ouverture de fiche et ajout à la sélection. Microphone humain non testé automatiquement.
+
+
+### Scrollcraft
+
+Le moteur officiel Scrollcraft (MIT, Nate Herk) est fourni sans modifications dans `public/scrollcraft`. Les plans du flacon, le sillage par notes, le catalogue et la sélection sont du code propre à Africa Parfum. Le bouton « Réduire les animations » conserve tous les contenus et retire les séquences supplémentaires. La préférence système est également respectée. Les modifications du filtre recalculent la mise en page sans remonter le moteur.
