@@ -52,7 +52,7 @@
 .ae-subject{grid-area:subject;position:relative;z-index:2;display:flex;align-items:flex-end;justify-content:center;min-height:clamp(240px,42vh,500px)}
 .ae-subject>.bottle{height:clamp(260px,50vh,540px);width:100%}
 .ae-plinth{position:absolute;left:50%;bottom:2%;translate:-50% 0;width:min(78%,380px);height:24px;border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(219,182,123,.30),transparent 72%);filter:blur(3px);pointer-events:none}
-.ae-hero-label{grid-area:label;position:relative;z-index:4;background:linear-gradient(90deg,rgba(17,27,24,.94),rgba(17,27,24,0) 88%);padding:14px 0}
+.ae-hero-label{grid-area:label;position:relative;z-index:4;background:linear-gradient(90deg,rgba(17,27,24,.94),rgba(17,27,24,0) 88%);padding:14px 0;margin-top:clamp(10px,2vw,22px)}
 .ae-title{font:clamp(34px,5.2vw,62px)/1.04 Georgia,serif;letter-spacing:-.04em;margin:14px 0 0;max-width:24ch}
 .ae-h2{font:clamp(25px,3.3vw,42px)/1.08 Georgia,serif;letter-spacing:-.035em;margin:10px 0 0}
 .ae-lede{font-size:clamp(15px,1.35vw,18px);line-height:1.62;color:#cdd5c9;max-width:46ch;margin:16px 0 0}
@@ -203,11 +203,8 @@ html[data-motion="still"] .ae-stage--atelier{height:auto!important;min-height:0!
 .photo-error{position:absolute;inset:20px;background:#f6f5f1;color:#202820;padding:20px;text-align:center}
 @media(max-width:900px){.ae-subject>.product-photo{max-width:270px}.product-photo img{padding:8px}.detail-panel .product-photo{height:300px}}
 
-.product-photo[data-product="dior-sauvage"] img{transform:scale(2.1)}
-.product-photo[data-product="chanel-n5"] img{transform:scale(1.15)}
-.product-photo[data-product="guerlain-shalimar"] img{transform:scale(1.4)}
-.product-photo[data-product="mfk-baccarat-rouge-540"] img{transform:scale(1.35)}
-.product-photo[data-product="tom-ford-oud-wood"] img{transform:scale(1.1)}
+/* Flacons complets : le fond blanc des photos est fondu par multiply, donc plus
+   besoin de zoom (scale) qui coupait le haut/bas de certains flacons. */
 
 @media(max-width:900px){.ae-subject{transform:none!important}}
 
@@ -222,8 +219,8 @@ html[data-motion="still"] .ae-stage--atelier{height:auto!important;min-height:0!
 
 /* 0c. Fond d'ambiance : essence de parfum abstraite (or liquide sur velours vert sombre),
    fixe derrière tout le contenu. Zoom lent maîtrisé = respiration, jamais un sursaut. */
-.ae-backdrop{position:fixed;inset:0;z-index:1;pointer-events:none;background-size:cover;background-position:center 42%;background-repeat:no-repeat;will-change:transform;animation:ae-kenburns 46s ease-in-out infinite alternate}
-.ae-backdrop::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,13,10,.42) 0%,rgba(8,13,10,.10) 24%,rgba(8,13,10,0) 46%,rgba(8,13,10,.18) 100%)}
+.ae-backdrop{position:fixed;inset:0;z-index:1;pointer-events:none;background-size:cover;background-position:center 42%;background-repeat:no-repeat;will-change:transform;animation:ae-kenburns 46s ease-in-out infinite alternate;filter:brightness(.72) saturate(.92)}
+.ae-backdrop::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,13,10,.52) 0%,rgba(8,13,10,.28) 30%,rgba(8,13,10,.06) 52%,rgba(8,13,10,.16) 100%),linear-gradient(180deg,rgba(8,13,10,.40) 0%,rgba(8,13,10,0) 30%,rgba(8,13,10,.24) 100%)}
 @keyframes ae-kenburns{from{transform:scale(1)}to{transform:scale(1.13)}}
 @media(prefers-reduced-motion:reduce){.ae-backdrop{animation:none}}
 
