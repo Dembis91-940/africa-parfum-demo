@@ -7,6 +7,7 @@ import {Concierge} from '@/components/africa/concierge';
 import {Sheet,SheetContent,SheetTitle,SheetDescription} from '@/components/ui/sheet';
 import {NotesMotion} from '@/components/africa/notes-motion';
 import {ScrollExperience,Sillage} from '@/app/scroll-experience';
+import {Immersive} from '@/app/immersive';
 
 /** Familles réelles du catalogue : Floral (2), Boisé (1), Ambré (3). */
 const families=['Tout','Floral','Boisé','Ambré'];
@@ -32,7 +33,8 @@ export default function Home(){
  const displayed=products.filter(p=>filter==='Tout'||p.family.toLowerCase().includes(filter.toLowerCase()));
 
  return <main className="ae-main">
-  <ScrollExperience/>
+ <ScrollExperience/>
+ <Immersive/>
   <header className="header"><a className="brand" href="#atelier">AFRICA<span>PARFUM</span></a><nav aria-label="Sommaire de la visite"><a href="#atelier">L’atelier</a><a href="#sillage">Le sillage</a><a href="#collection">Le catalogue</a><a href="#selection">Ma sélection</a></nav><button className="text-button" onClick={()=>setBag(true)}><ShoppingBag size={18}/> Ma sélection <span>{selection.length}</span></button></header>
   <div className="demo-bar">PARFUMERIE AFRICA <button className="motion-switch" aria-pressed={still} onClick={()=>setStill(s=>!s)}>{still?'Animations désactivées':'Réduire les animations'}</button></div>
 
