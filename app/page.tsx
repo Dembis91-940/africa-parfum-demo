@@ -9,7 +9,7 @@ import {NotesMotion} from '@/components/africa/notes-motion';
 import {ScrollExperience,Sillage} from '@/app/scroll-experience';
 import {Immersive} from '@/app/immersive';
 import {Atmosphere} from '@/app/atmosphere';
-import {ArchitecturalWorld} from '@/app/architectural-world';
+import {Backdrop} from '@/app/backdrop';
 
 /** Familles réelles du catalogue : Floral (2), Boisé (1), Ambré (3). */
 const families=['Tout','Floral','Boisé','Ambré'];
@@ -36,7 +36,7 @@ export default function Home(){
 
  return <main className="ae-main">
  <ScrollExperience/>
- <ArchitecturalWorld/>
+ <Backdrop/>
  <Atmosphere/>
  <Immersive/>
   <header className="header"><a className="brand" href="#atelier">AFRICA<span>PARFUM</span></a><nav aria-label="Sommaire de la visite"><a href="#atelier">L’atelier</a><a href="#sillage">Le sillage</a><a href="#collection">Le catalogue</a><a href="#selection">Ma sélection</a></nav><button className="text-button" onClick={()=>setBag(true)}><ShoppingBag size={18}/> Ma sélection <span>{selection.length}</span></button></header>

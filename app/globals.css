@@ -222,6 +222,13 @@ html[data-motion="still"] .ae-stage--atelier{height:auto!important;min-height:0!
 /* 0a. Galerie architecturale 3D (sous la poussière, derrière le contenu) */
 .ae-architecture{position:fixed;inset:0;z-index:1;pointer-events:none;width:100vw;height:100vh}
 
+/* 0c. Fond d'ambiance : essence de parfum abstraite (or liquide sur velours vert sombre),
+   fixe derrière tout le contenu. Zoom lent maîtrisé = respiration, jamais un sursaut. */
+.ae-backdrop{position:fixed;inset:0;z-index:1;pointer-events:none;background-size:cover;background-position:center 42%;background-repeat:no-repeat;will-change:transform;animation:ae-kenburns 46s ease-in-out infinite alternate}
+.ae-backdrop::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,13,10,.42) 0%,rgba(8,13,10,.10) 24%,rgba(8,13,10,0) 46%,rgba(8,13,10,.18) 100%)}
+@keyframes ae-kenburns{from{transform:scale(1)}to{transform:scale(1.13)}}
+@media(prefers-reduced-motion:reduce){.ae-backdrop{animation:none}}
+
 /* 0b. Intégration du flacon dans la scène : halo chaud qui pulse + ombre au sol. */
 .ae-subject::before{content:'';position:absolute;inset:-14% -10%;z-index:0;background:radial-gradient(50% 50% at 50% 48%,rgba(219,182,123,.32),rgba(219,182,123,.09) 52%,transparent 70%);filter:blur(3px);pointer-events:none;animation:ae-glow 6s ease-in-out infinite}
 .ae-subject::after{content:'';position:absolute;left:50%;bottom:2%;translate:-50% 0;width:min(72%,360px);height:24px;border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(219,182,123,.32),transparent 70%);filter:blur(7px);pointer-events:none;animation:ae-glow 6s ease-in-out infinite}
