@@ -102,18 +102,18 @@ function makeGate(index:number, z:number, width:number, height:number, stone:THR
 function makeVitrine(x:number,z:number,tex:THREE.Texture,stone:THREE.MeshStandardMaterial,brass:THREE.MeshStandardMaterial): THREE.Group{
   const g=new THREE.Group();
   g.position.set(x,0,z);
-  g.rotation.y=x<0?0.24:-0.24;
+  g.rotation.y=x<0?0.55:-0.55;
   const w=2.2,h=3.0,d=0.8;
 
   /* Alcôve éclairée : fond chaud qui fait ressortir le flacon. */
-  addMesh(g,new THREE.BoxGeometry(w,h,0.14),new THREE.MeshStandardMaterial({color:0x241a0f,roughness:.5,metalness:.2,emissive:0x8a5a1a,emissiveIntensity:.95}),0,h/2,-d/2+0.06);
+  addMesh(g,new THREE.BoxGeometry(w,h,0.14),new THREE.MeshStandardMaterial({color:0x241a0f,roughness:.5,metalness:.2,emissive:0xca8a38,emissiveIntensity:1.7}),0,h/2,-d/2+0.06);
 
   /* Socle laiton. */
   addMesh(g,new THREE.BoxGeometry(w,0.14,d),brass,0,0.07,0);
 
   /* Flacon réel, rétro-éclairé, face au couloir. */
-  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.35,2.1),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
-  photo.position.set(0,0.14+1.05,0.08);
+  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.4,2.15),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
+  photo.position.set(0,0.14+1.075,0.08);
   photo.rotation.y=x<0?Math.PI/2:-Math.PI/2;
   g.add(photo);
 
