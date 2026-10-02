@@ -102,17 +102,18 @@ function makeGate(index:number, z:number, width:number, height:number, stone:THR
 function makeVitrine(x:number,z:number,tex:THREE.Texture,stone:THREE.MeshStandardMaterial,brass:THREE.MeshStandardMaterial): THREE.Group{
   const g=new THREE.Group();
   g.position.set(x,0,z);
-  const w=1.7,h=2.5,d=0.66;
+  g.rotation.y=x<0?0.24:-0.24;
+  const w=2.2,h=3.0,d=0.8;
 
   /* Alcôve éclairée : fond chaud qui fait ressortir le flacon. */
-  addMesh(g,new THREE.BoxGeometry(w,h,0.12),new THREE.MeshStandardMaterial({color:0x221a10,roughness:.5,metalness:.2,emissive:0x6f4a14,emissiveIntensity:.55}),0,h/2,-d/2+0.05);
+  addMesh(g,new THREE.BoxGeometry(w,h,0.14),new THREE.MeshStandardMaterial({color:0x241a0f,roughness:.5,metalness:.2,emissive:0x8a5a1a,emissiveIntensity:.95}),0,h/2,-d/2+0.06);
 
   /* Socle laiton. */
-  addMesh(g,new THREE.BoxGeometry(w,0.12,d),brass,0,0.06,0);
+  addMesh(g,new THREE.BoxGeometry(w,0.14,d),brass,0,0.07,0);
 
   /* Flacon réel, rétro-éclairé, face au couloir. */
-  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.0,1.62),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
-  photo.position.set(0,0.12+0.81,0.06);
+  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.35,2.1),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
+  photo.position.set(0,0.14+1.05,0.08);
   photo.rotation.y=x<0?Math.PI/2:-Math.PI/2;
   g.add(photo);
 
@@ -200,13 +201,13 @@ export function ArchitecturalWorld(){
     /* Vitrines : une vraie boutique — on longe des parfums en vitrine des deux côtés. */
     const baseDir=(()=>{const u=new URL(document.baseURI);let p=u.pathname;if(!p.endsWith('/'))p=p.slice(0,p.lastIndexOf('/')+1);return u.origin+p;})();
     const texLoader=new THREE.TextureLoader();
-    const vitrineZ=[3.7,-1.3,-6.3,-11.3];
+    const vitrineZ=[4.5,0.2,-4.3,-8.8];
     let vi=0;
     for(const vz of vitrineZ){
       for(const side of [-1,1]){
         const tex=texLoader.load(baseDir+products[vi%products.length].image);
         tex.colorSpace=THREE.SRGBColorSpace;
-        scene.add(makeVitrine(side*4.05,vz,tex,stone,brass));
+        scene.add(makeVitrine(side*3.9,vz,tex,stone,brass));
         vi++;
       }
     }
