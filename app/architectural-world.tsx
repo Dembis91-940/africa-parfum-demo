@@ -102,8 +102,9 @@ function makeGate(index:number, z:number, width:number, height:number, stone:THR
 function makeVitrine(x:number,z:number,tex:THREE.Texture,stone:THREE.MeshStandardMaterial,brass:THREE.MeshStandardMaterial): THREE.Group{
   const g=new THREE.Group();
   g.position.set(x,0,z);
-  g.rotation.y=x<0?0.55:-0.55;
-  const w=2.2,h=3.0,d=0.8;
+  /* Face à l'entrée (diagonale couloir + entrée) : visible dès l'arrivée. */
+  g.rotation.y=x<0?0.785:-0.785;
+  const w=1.9,h=3.0,d=0.7;
 
   /* Alcôve éclairée : fond chaud qui fait ressortir le flacon. */
   addMesh(g,new THREE.BoxGeometry(w,h,0.14),new THREE.MeshStandardMaterial({color:0x241a0f,roughness:.5,metalness:.2,emissive:0xca8a38,emissiveIntensity:1.7}),0,h/2,-d/2+0.06);
@@ -111,19 +112,18 @@ function makeVitrine(x:number,z:number,tex:THREE.Texture,stone:THREE.MeshStandar
   /* Socle laiton. */
   addMesh(g,new THREE.BoxGeometry(w,0.14,d),brass,0,0.07,0);
 
-  /* Flacon réel, rétro-éclairé, face au couloir. */
-  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.4,2.15),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
-  photo.position.set(0,0.14+1.075,0.08);
-  photo.rotation.y=x<0?Math.PI/2:-Math.PI/2;
+  /* Flacon réel, rétro-éclairé, face à l'entrée (plan +z par défaut). */
+  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.3,2.0),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
+  photo.position.set(0,0.14+1.0,-d/2+0.16);
   g.add(photo);
 
-  /* Armature dorée : montants + traverse haute. */
-  addMesh(g,new THREE.BoxGeometry(0.05,h,0.05),brass,-w/2+0.05,h/2,d/2-0.01);
-  addMesh(g,new THREE.BoxGeometry(0.05,h,0.05),brass,w/2-0.05,h/2,d/2-0.01);
-  addMesh(g,new THREE.BoxGeometry(w,0.05,0.05),brass,0,h,d/2-0.01);
+  /* Armature dorée : montants + traverse haute (face avant). */
+  addMesh(g,new THREE.BoxGeometry(0.06,h,0.06),brass,-w/2+0.06,h/2,d/2-0.01);
+  addMesh(g,new THREE.BoxGeometry(0.06,h,0.06),brass,w/2-0.06,h/2,d/2-0.01);
+  addMesh(g,new THREE.BoxGeometry(w,0.06,0.06),brass,0,h,d/2-0.01);
 
-  /* Vitre avant (Standard, pas Physical : plus léger, rendu identique à cette opacité). */
-  addMesh(g,new THREE.BoxGeometry(w,h,0.05),new THREE.MeshStandardMaterial({color:0xd9f0e6,transparent:true,opacity:0.12,roughness:0.04,metalness:0.05}),0,h/2,d/2-0.03);
+  /* Vitre avant. */
+  addMesh(g,new THREE.BoxGeometry(w,h,0.06),new THREE.MeshStandardMaterial({color:0xd9f0e6,transparent:true,opacity:0.12,roughness:0.04,metalness:0.05}),0,h/2,d/2-0.03);
 
   return g;
 }
@@ -207,7 +207,7 @@ export function ArchitecturalWorld(){
       for(const side of [-1,1]){
         const tex=texLoader.load(baseDir+products[vi%products.length].image);
         tex.colorSpace=THREE.SRGBColorSpace;
-        scene.add(makeVitrine(side*3.9,vz,tex,stone,brass));
+        scene.add(makeVitrine(side*2.8,vz,tex,stone,brass));
         vi++;
       }
     }
