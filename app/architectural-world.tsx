@@ -1,6 +1,7 @@
 'use client';
 import {useEffect,useRef} from 'react';
 import * as THREE from 'three';
+import {products} from '@/lib/catalog';
 
 /**
  * Galerie africaine — architecture 3D vivante d’Africa Parfum.
@@ -97,6 +98,35 @@ function makeGate(index:number, z:number, width:number, height:number, stone:THR
   return {group, brass:gold, light:lamp};
 }
 
+/** Vitrine rétro-éclairée : un flacon réel du catalogue présenté comme en boutique. */
+function makeVitrine(x:number,z:number,tex:THREE.Texture,stone:THREE.MeshStandardMaterial,brass:THREE.MeshStandardMaterial): THREE.Group{
+  const g=new THREE.Group();
+  g.position.set(x,0,z);
+  const w=1.7,h=2.5,d=0.66;
+
+  /* Alcôve éclairée : fond chaud qui fait ressortir le flacon. */
+  addMesh(g,new THREE.BoxGeometry(w,h,0.12),new THREE.MeshStandardMaterial({color:0x221a10,roughness:.5,metalness:.2,emissive:0x6f4a14,emissiveIntensity:.55}),0,h/2,-d/2+0.05);
+
+  /* Socle laiton. */
+  addMesh(g,new THREE.BoxGeometry(w,0.12,d),brass,0,0.06,0);
+
+  /* Flacon réel, rétro-éclairé, face au couloir. */
+  const photo=new THREE.Mesh(new THREE.PlaneGeometry(1.0,1.62),new THREE.MeshBasicMaterial({map:tex,transparent:true}));
+  photo.position.set(0,0.12+0.81,0.06);
+  photo.rotation.y=x<0?Math.PI/2:-Math.PI/2;
+  g.add(photo);
+
+  /* Armature dorée : montants + traverse haute. */
+  addMesh(g,new THREE.BoxGeometry(0.05,h,0.05),brass,-w/2+0.05,h/2,d/2-0.01);
+  addMesh(g,new THREE.BoxGeometry(0.05,h,0.05),brass,w/2-0.05,h/2,d/2-0.01);
+  addMesh(g,new THREE.BoxGeometry(w,0.05,0.05),brass,0,h,d/2-0.01);
+
+  /* Vitre avant (Standard, pas Physical : plus léger, rendu identique à cette opacité). */
+  addMesh(g,new THREE.BoxGeometry(w,h,0.05),new THREE.MeshStandardMaterial({color:0xd9f0e6,transparent:true,opacity:0.12,roughness:0.04,metalness:0.05}),0,h/2,d/2-0.03);
+
+  return g;
+}
+
 export function ArchitecturalWorld(){
   const canvasRef=useRef<HTMLCanvasElement>(null);
 
@@ -164,6 +194,20 @@ export function ArchitecturalWorld(){
         pillar.rotation.z=side*.025;
         addMesh(scene,new THREE.CylinderGeometry(.3*scale,.36*scale,.12*scale,12),brass,x,.12*scale,z);
         addMesh(scene,new THREE.CylinderGeometry(.28*scale,.2*scale,.15*scale,12),brass,x,4.82*scale,z);
+      }
+    }
+
+    /* Vitrines : une vraie boutique — on longe des parfums en vitrine des deux côtés. */
+    const baseDir=(()=>{const u=new URL(document.baseURI);let p=u.pathname;if(!p.endsWith('/'))p=p.slice(0,p.lastIndexOf('/')+1);return u.origin+p;})();
+    const texLoader=new THREE.TextureLoader();
+    const vitrineZ=[3.7,-1.3,-6.3,-11.3];
+    let vi=0;
+    for(const vz of vitrineZ){
+      for(const side of [-1,1]){
+        const tex=texLoader.load(baseDir+products[vi%products.length].image);
+        tex.colorSpace=THREE.SRGBColorSpace;
+        scene.add(makeVitrine(side*4.05,vz,tex,stone,brass));
+        vi++;
       }
     }
 
