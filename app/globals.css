@@ -216,6 +216,14 @@ html[data-motion="still"] .ae-stage--atelier{height:auto!important;min-height:0!
 /* ===== Couche 3D · dynamique · immersif (Demba's standing preference) ===== */
 :root{--mx:0;--my:0;--cx:50%;--cy:50%}
 
+/* 0. Champ de poussière d'or 3D (derrière le contenu, au-dessus du fond) */
+.ae-atmosphere{position:fixed;inset:0;z-index:1;pointer-events:none;width:100vw;height:100vh}
+
+/* 0b. Intégration du flacon dans la scène : halo chaud qui pulse + ombre au sol. */
+.ae-subject::before{content:'';position:absolute;inset:-14% -10%;z-index:0;background:radial-gradient(50% 50% at 50% 48%,rgba(219,182,123,.32),rgba(219,182,123,.09) 52%,transparent 70%);filter:blur(3px);pointer-events:none;animation:ae-glow 6s ease-in-out infinite}
+.ae-subject::after{content:'';position:absolute;left:50%;bottom:2%;translate:-50% 0;width:min(72%,360px);height:24px;border-radius:50%;background:radial-gradient(50% 50% at 50% 50%,rgba(219,182,123,.32),transparent 70%);filter:blur(7px);pointer-events:none;animation:ae-glow 6s ease-in-out infinite}
+@keyframes ae-glow{0%,100%{opacity:.8}50%{opacity:1}}
+
 /* 1. Lumière de lampe qui suit le curseur (atelier de nuit) */
 .ae-cursor-light{position:fixed;inset:0;z-index:6;pointer-events:none;mix-blend-mode:screen;background:radial-gradient(52rem 52rem at var(--cx) var(--cy),rgba(219,182,123,.11),rgba(219,182,123,.035) 42%,transparent 68%)}
 @media (hover:none),(pointer:coarse){.ae-cursor-light{display:none}}
